@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Show Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/shows.css' %}">
+</head>
+<body>
+    <div class="mainwrapper">
+        <h1>TV Show #{{ one_show.id }}:</h1>
+        <a href="/shows">All Shows</a>
+        <h3>Title: {{ one_show.title }}</h3>
+        <h3>Network: {{ one_show.network }}</h3>
+        <h3>Release Date: {{ one_show.release_date }}</h3>
+        <p><strong>Description: {{ one_show.description }}</strong></p>
+        <h4>Last Updated: {{ one_show.updated_at }}</h4>
+        <a href="/shows/{{one_show.id}}/edit">Edit</a>
+        <div class="smallDelete">
+            <form action="/shows/{{one_show.id}}/destroy" method="POST">
+                {% csrf_token %}
+                <input class="deleteButton" type="submit" value="Delete">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
