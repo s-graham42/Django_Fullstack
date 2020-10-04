@@ -1,19 +1,24 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Courses Assignment</title>
     {% load static %}
     <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
-
 </head>
 
 <body>
     <div class="container">
         <div class="col-md-8">
             <h1 class="page-header">Add a New Course</h1>
+            {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li>{{message}}</li>
+                        {% endfor %}
+                    </ul>
+            {% endif %}
             <form action="/create" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -41,48 +46,16 @@
                     <th scope="col">Date Added</th>
                     <th scope="col">Actions</th>
                 </tr>
+                {% for course in all_courses %}
                 <tr>
-                    <td>Jill</td>
-                    <td>Smith</td>
-                    <td>50</td>
+                    <td>{{course.id}}</td>
+                    <td>{{course.course_name}}</td>
+                    <td>{{course.description.desc}}</td>
+                    <td>{{course.created_at}}</td>
+                    <td><a href="/courses/destroy/{{course.id}}">Remove</a></td>
                 </tr>
-                <tr>
-                    <td>Eve</td>
-                    <td>Jackson</td>
-                    <td>24</td>
-                </tr>
-                <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>34</td>
-                </tr>
-                <tr>
-                    <td>Stephanie</td>
-                    <td>Landon</td>
-                    <td>47</td>
-                </tr>
-                <tr>
-                    <td>Mike</td>
-                    <td>Johnson</td>
-                    <td>19</td>
-                </tr>
+                {% endfor %}
         </table>
     </div>
-
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
 </body>
-
 </html>
