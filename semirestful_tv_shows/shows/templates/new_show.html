@@ -11,7 +11,13 @@
     <div class="mainwrapper">
         <h1>Add a New Show</h1>
         <a href="/shows">All Shows</a>
-
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{massage.tags}}" {% endif %}>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         <form action="/shows/create" method="POST">
             {% csrf_token %}
             <div class="detailsArea">
@@ -22,11 +28,11 @@
                 <label for="network">Network</label>
                 <input type="text" id="network" name="network">
                 <label for="release_date">Release Date</label>
-                <input type="date" id="release_date" name="release_date">
+                <input type="date" id="release_date" name="release_date" value="1926-01-26">
             </div>
             <div class="detailsArea">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" rows="5" cols="30">Enter a Description</textarea>
+                <textarea id="description" name="description" rows="5" cols="30" placeholder="Optional: Enter a Description"></textarea>
             </div>
             <input class="submit" type="submit" value="Create">
         </form>

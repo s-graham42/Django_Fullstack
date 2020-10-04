@@ -105,3 +105,8 @@ h3, h4, p {
     width: 20%;
     text-align: center;
 }
+.messages {
+    list-style-type: none;
+    color: red;
+    text-align: center;
+}

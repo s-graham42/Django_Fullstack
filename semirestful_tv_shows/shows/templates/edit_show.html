@@ -11,6 +11,13 @@
     <div class="mainwrapper">
         <h1>Edit Show #{{one_show.id}}: {{one_show.title}}</h1>
         <a href="/shows">All Shows</a>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{massage.tags}}" {% endif %}>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
         <form action="/shows/{{one_show.id}}/update" method="POST">
             {% csrf_token %}
