@@ -9,9 +9,25 @@
 </head>
 <body>
     <div class="container">
+        {% if messages %}
+            <div class="row my-4 justify-content-center">
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col-sm px-5">
                 <h1 class="my-5">Registration</h1>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 <form action="/register" method="POST">
                     {% csrf_token %}
                     <div class="form-group row">
