@@ -23,20 +23,19 @@ def register(request):
 
 def login(request):
     if request.method =="POST":
-        errors = User.objects.login_validator(request.POST)
-        if len(errors) > 0:
-            for key, value in errors.items():
-                messages.error(request, value)
-            return redirect('/')
-        else:
-            login_user = User.objects.filter(email=request.POST['email'])
-            request.session["current_user"] = login_user[0].id
-            print(login_user[0].id)
-            return redirect('/success')
+        login_user = User.objects.filter(email=request.POST['email'])
+        if len(login_user) > 0:
+            login_user = login_user[0]
+            if bcrypt.checkpw(request.POST['password'].encode(), login_user.password.encode()):
+                request.session["current_user"] = login_user.id
+                return redirect('/success')
+        messages.error(request, "Email or password is incorrect.")
+        return redirect('/')
     return redirect('/')
 
 def success(request):
-    if not 'current_user' in request.session:
+    if 'current_user' not in request.session:
+        messages.error(request, "Please register or log in.")
         return redirect('/')
     else:
         context = {
@@ -45,5 +44,5 @@ def success(request):
         return render(request, 'success.html', context)
 
 def log_out(request):
-    request.session.flush()
+    request.session.clear()
     return redirect('/')
