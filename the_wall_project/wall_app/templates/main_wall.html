@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration Assignment</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container mb-5">
+        <div class="row border border-dark">
+            <div class="col-sm">
+                <h1>CodingDojo Wall</h1>
+            </div>
+            <div class="col-sm">
+                <h3 class="d-inline align-baseline mx-3 my-auto">Welcome {{curr_user.first_name}}</h3>
+                <a class="d-inline align-baseline mx-3 my-auto" href="/log_out">Log Off</a>
+            </div>
+        </div>
+        {% if messages %}
+        <div class="row my-4 justify-content-center">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="container-fluid my-4">
+            <div class="col-sm">
+                <form action="/wall/messages/create" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="new_message">Post a message:</label>
+                        <textarea class="form-control" name="new_message" id="new_message" rows="3" minlength="5"></textarea>
+                    </div>
+                    <div class="row justify-content-right">
+                        <input class="btn btn-primary my-3 ml-auto" type="submit" value="Post a message">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            {% for msg in all_messages %}
+            <div class="my-4 p-2">
+                <p><strong>{{msg.user.first_name}} {{msg.user.last_name}}:</strong>   {{msg.created_at}}</p>
+                <p>{{msg.msg}}</p>
+                {% for comment in msg.msg_comments.all %}
+                <div class="my-2 pl-4 pr-2">
+                    <p><strong>{{comment.user.first_name}} {{comment.user.last_name}}:</strong>   {{comment.created_at}}</p>
+                    <p>{{comment.comment}}</p>
+                </div>
+                {% endfor %}
+                {% if msg.user.id != request.session.current_user %}
+                <div class="container-fluid my-4">
+                    <div class="col-sm">
+                        <form action="/wall/messages/comment" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label for="new_comment">Post a comment:</label>
+                                <textarea class="form-control" name="new_comment" id="new_comment" rows="2" minlength="5"></textarea>
+                                <input type="hidden" id="msg_id" name="msg_id" value="{{msg.id}}">
+                            </div>
+                            <div class="row justify-content-right">
+                                <input class="btn btn-success my-3 ml-auto" type="submit" value="Post a comment">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
