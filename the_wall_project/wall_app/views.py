@@ -47,3 +47,17 @@ def create_comment(request):
             Comment.objects.create(comment=request.POST['new_comment'], user=curr_user, msg=curr_message)
             return redirect('/wall')
     return redirect('/wall')
+
+def destroy_message(request):
+    if "current_user" not in request.session:
+        messages.error(request, "Please register or log in.")
+        return redirect('/')
+    if request.method == "POST":
+        msg_to_delete = Msg.objects.get(id=request.POST['msg_id'])
+        if msg_to_delete.user.id == request.session['current_user']:
+            msg_to_delete.delete()
+            return redirect('/wall')
+        else:
+            messages.error(request, "Not your message to delete.")
+            return redirect('/wall')
+    return redirect('/wall')
