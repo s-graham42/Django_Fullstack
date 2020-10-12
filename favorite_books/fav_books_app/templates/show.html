@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container mb-5">
+        <header class="row border border-dark p-4">
+            <div class="col-sm justify-content-left">
+                <h1>Welcome {{curr_user.first_name}}</h1>
+            </div>
+            <div class="col-sm justify-content-right">
+                <a href="/books">Back to Main Page</a>
+                <a class="d-inline align-baseline mx-3 my-auto" href="/log_out">( Log Off )</a>
+            </div>
+        </header>
+        {% if messages %}
+        <section class="row my-4 justify-content-center">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+        <main class="row my-4">
+            <div class="col-sm-5">
+                <div>
+                    <h3 class="my-4">{{this_book.title}}</h3>
+                    <p><strong>Added By: {{this_book.uploaded_by.first_name}} {{this_book.uploaded_by.last_name}}</strong></p>
+                    <p><strong>Added on: {{this_book.created_at}}</strong></p>
+                    <p><strong>Last Updated: {{this_book.updated_at}}</strong></p>
+                    <p><strong>Description: {{this_book.desc}}</strong></p>
+                </div>
+            </div>
+            <div class="col-sm-6 ml-4">
+                <h3 class="my-4">Users who like this Book:</h2>
+                {% for user in favorited %}
+                    <ul>
+                        <li><strong>{{user.first_name}} {{user.last_name}}</strong></li>
+                    </ul>
+                {% endfor %}
+                {% if curr_user not in favorited %}
+                    <a href="/books/{{this_book.id}}/like">Add to Favorites</a>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

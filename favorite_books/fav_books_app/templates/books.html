@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container mb-5">
+        <header class="row border border-dark p-4">
+            <div class="col-sm justify-content-left">
+                <h1>Welcome {{curr_user.first_name}}</h1>
+            </div>
+            <div class="col-sm justify-content-right">
+                <a class="d-inline align-baseline mx-3 my-auto" href="/log_out">( Log Off )</a>
+            </div>
+        </header>
+        {% if messages %}
+        <section class="row my-4 justify-content-center">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+        <main class="row my-4">
+            <div class="col-sm-5">
+                <h2 class="my-4">Add a Favorite Book:</h2>
+                <form action="/books/create" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-4"><strong>Title:</strong></label>
+                        <input class="form-control col-sm-8" type="text" id="title" name="title" minlength="2" required>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-4"><strong>Description:</strong></label>
+                        <textarea class="form-control col-sm-8" name="description" id="description" rows="3" minlength="5" required></textarea>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input class="btn btn-primary my-3 ml-auto" type="submit" value="Add Book">
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-6 ml-4">
+                <h2 class="my-4">All Books:</h2>
+                {% for book in all_books %}
+                    <h3 class="mt-4"><a href="/books/{{book.id}}">{{book.title}}</a></h3>
+                    <p>{{book.desc}}</p>
+                    <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                    {% if curr_user in book.liked_by.all %}
+                        <p><em>this is one of your favorites</em></p>
+                    {% else %}
+                        <a href="/books/{{book.id}}/like">Add to Favorites</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>
