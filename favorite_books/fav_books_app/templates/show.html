@@ -39,11 +39,17 @@
             </div>
             <div class="col-sm-6 ml-4">
                 <h3 class="my-4">Users who like this Book:</h2>
-                {% for user in favorited %}
                     <ul>
-                        <li><strong>{{user.first_name}} {{user.last_name}}</strong></li>
+                        {% for user in favorited %}
+                        <li><strong>{{user.first_name}} {{user.last_name}}</strong>
+                            {% if user == curr_user %}
+                            <ul>
+                                <li><a href="/books/{{this_book.id}}/un_like">Un-Favorite</a></li>
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
                     </ul>
-                {% endfor %}
                 {% if curr_user not in favorited %}
                     <a href="/books/{{this_book.id}}/like">Add to Favorites</a>
                 {% endif %}

@@ -53,7 +53,7 @@
                     {% if curr_user in book.liked_by.all %}
                         <p><em>this is one of your favorites</em></p>
                     {% else %}
-                        <a href="/books/{{book.id}}/like">Add to Favorites</a>
+                        <a href="/books/{{book.id}}">Add to Favorites</a>
                     {% endif %}
                 {% endfor %}
             </div>

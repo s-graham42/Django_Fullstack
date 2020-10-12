@@ -14,6 +14,7 @@
                 <h1>Welcome {{curr_user.first_name}}</h1>
             </div>
             <div class="col-sm justify-content-right">
+                <a href="/books">Back to Main Page</a>
                 <a class="d-inline align-baseline mx-3 my-auto" href="/log_out">( Log Off )</a>
             </div>
         </header>
@@ -28,10 +29,10 @@
         {% endif %}
         <main class="row my-4">
             <div class="col-sm-5">
-                <form action="/books/{{this_book.id}}/edit" method="POST">
+                <form action="/books/{{this_book.id}}/update" method="POST">
                     {% csrf_token %}
                     <div class="form-group row">
-                        <input class="form-control col-sm" type="text" id="title" name="title" minlength="2" value="{{this_book.title}}">
+                        <input class="form-control col-sm" type="text" id="title" name="title" minlength="2" value="{{this_book.title}}" required>
                     </div>
                     <p><strong>Added By: {{this_book.uploaded_by.first_name}} {{this_book.uploaded_by.last_name}}</strong></p>
                     <p><strong>Added on: {{this_book.created_at}}</strong></p>
@@ -41,16 +42,27 @@
                         <textarea class="form-control col-sm-8" name="description" id="description" rows="3" minlength="5">{{this_book.desc}}</textarea>
                     </div>
                     <div class="row justify-content-center">
-                        <input class="btn btn-primary my-3" type="submit" value="Add Book">
-                        <a class="btn btn-danger my-3" href="#">Delete</a>
+                        <input class="btn btn-primary m-3" type="submit" value="Edit Book">
                     </div>
                 </form>
+                <div class="row justify-content-center">
+                    <form action="/books/{{this_book.id}}/destroy" method="POST">
+                        {% csrf_token %}
+                        <input class="btn btn-danger m-3" type="submit" value="Delete Book">
+                    </form>
+                </div>
             </div>
             <div class="col-sm-6 ml-4">
                 <h3 class="my-4">Users who like this Book:</h2>
                     {% for user in favorited %}
                         <ul>
-                            <li><strong>{{user.first_name}} {{user.last_name}}</strong></li>
+                            <li><strong>{{user.first_name}} {{user.last_name}}</strong>
+                                {% if user == curr_user %}
+                                <ul>
+                                    <li><a href="/books/{{this_book.id}}/un_like">Un-Favorite</a></li>
+                                </ul>
+                                {% endif %}
+                            </li>
                         </ul>
                     {% endfor %}
                     {% if curr_user not in favorited %}
