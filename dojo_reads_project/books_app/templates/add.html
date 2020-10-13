@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Reads - Add a Book and Review</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-sm justify-content-start">
+                <h3 class="m-3">Welcome, {{curr_user.first_name}} {{curr_user.last_name}}!</h3>
+            </div>
+            <div class="col-sm">
+                <a class="btn btn-primary m-3" href="/books">Home</a>
+                <a class="btn btn-danger m-3" href="/log_out">Log Out</a>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="row my-4 justify-content-center">
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm px-5 mx-2">
+                <h3 class="my-5">Add a New Book Title and Review</h3>
+                <form action="/books/create" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-4">Book Title:</label>
+                        <input class="form-control col-sm-8" type="text" id="title" name="title" minlength="2" required>
+                    </div>
+                    <div class="form-group row">
+                        <label for="author" class="col-sm-4">Author:</label>
+                        <input class="form-control col-sm-8" type="text" id="author" name="author" minlength="2" required>
+                    </div>
+                    <div class="form-group row">
+                        <label for="review" class="col-sm-4">Review:</label>
+                        <textarea class="form-control col-sm-8" id="review" name="review" rows="3" minlength="5" required></textarea>
+                    </div>
+                    <div class="form-group row">
+                        <label for="rating" class="col-sm-4">Rating (1 to 5):</label>
+                        <input class="form-control col-sm-1" type="number" id="rating" name="rating" min="1" max="5" value="3" required>
+                    </div>
+                        <div class="row justify-content-end">
+                            <input class="btn btn-primary my-3" type="submit" value="Add Book and Review">
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

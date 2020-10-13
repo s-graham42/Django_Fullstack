@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojo Reads Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-sm justify-content-start">
+                <h1 class="m-3">Welcome, {{curr_user.first_name}} {{curr_user.last_name}}!</h1>
+            </div>
+            <div class="col-sm">
+                <a class="btn btn-primary m-3" href="/books/add">Add Book and Review</a>
+                <a class="btn btn-danger m-3" href="/log_out">Log Out</a>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="row my-4 justify-content-center">
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm px-5 mx-2">
+                <h2>Recent Book Reviews:</h2>
+                <h4><a href="#">-a book-here-</a></h4>
+            </div>
+            <div class="col-sm px-5 mx-2">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
