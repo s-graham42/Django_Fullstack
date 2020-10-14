@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from login.models import User
 from .models import Msg, Comment
+from datetime import datetime, timezone
 
 # Create your views here.
 def main_wall(request):
@@ -54,10 +55,11 @@ def destroy_message(request):
         return redirect('/')
     if request.method == "POST":
         msg_to_delete = Msg.objects.get(id=request.POST['msg_id'])
-        if msg_to_delete.user.id == request.session['current_user']:
+        time_since_post = (datetime.now(timezone.utc) - msg_to_delete.created_at)
+        if msg_to_delete.user.id == request.session['current_user'] and time_since_post.seconds < 1800:
             msg_to_delete.delete()
             return redirect('/wall')
         else:
-            messages.error(request, "Not your message to delete.")
+            messages.error(request, "Time since post exceeds 30 minutes, (or unauthorized deletion.)")
             return redirect('/wall')
     return redirect('/wall')
